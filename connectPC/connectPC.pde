@@ -8,7 +8,7 @@ float accelerometerX, accelerometerY, accelerometerZ;
 void setup() {
   size(480, 480);
   oscP5 = new OscP5(this, 12000);
-  remoteLocation = new NetAddress("192.168.1.3", 12000);  // 1 Customize!
+  remoteLocation = new NetAddress("10.0.2.16", 12000);  // 1 Customize!
   textAlign(CENTER, CENTER);
   textSize(24);
 }
