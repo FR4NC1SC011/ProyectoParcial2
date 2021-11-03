@@ -42,10 +42,10 @@ $('#contactForm').submit(function(e) {
 
 firebase.database().ref('sensors').on('value',(snap)=>{
     Object.keys(snap.val()).forEach((key) => {
-        document.getElementById("email").innerHTML = snap.val()[key].email;
-        document.getElementById("name").innerHTML = snap.val()[key].name;
-        document.getElementById("message").innerHTML = snap.val()[key].message;
-        document.getElementById("subject").innerHTML = snap.val()[key].subject;
+        document.getElementById("val_x").innerHTML = snap.val()[key].val_x;
+        document.getElementById("val_y").innerHTML = snap.val()[key].val_y;
+        document.getElementById("val_z").innerHTML = snap.val()[key].val_z;
+        document.getElementById("iluminacion").innerHTML = snap.val()[key].iluminacion;
         // alert(`Once Name: ${snap.val()[key].name}`);
         // alert(`Once Email: ${snap.val()[key].email}`);
         // alert(`Once Subject: ${snap.val()[key].subject}`);
