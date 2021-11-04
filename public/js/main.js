@@ -42,14 +42,27 @@ $('#contactForm').submit(function(e) {
 
 firebase.database().ref('sensors').on('value',(snap)=>{
     Object.keys(snap.val()).forEach((key) => {
-        document.getElementById("val_x").innerHTML = snap.val()[key].val_x;
-        document.getElementById("val_y").innerHTML = snap.val()[key].val_y;
-        document.getElementById("val_z").innerHTML = snap.val()[key].val_z;
-        document.getElementById("iluminacion").innerHTML = snap.val()[key].iluminacion;
+        var acel_x = snap.val()[key].val_x;
+        var acel_y = snap.val()[key].val_y;
+        var acel_z = snap.val()[key].val_z;
+        var ilum = snap.val()[key].iluminacion;
+        document.getElementById("val_x").innerHTML = acel_x; 
+        document.getElementById("val_y").innerHTML = acel_y;
+        document.getElementById("val_z").innerHTML = acel_z;
+        document.getElementById("iluminacion").innerHTML = ilum; 
         // alert(`Once Name: ${snap.val()[key].name}`);
         // alert(`Once Email: ${snap.val()[key].email}`);
         // alert(`Once Subject: ${snap.val()[key].subject}`);
         // alert(`Once Message: ${snap.val()[key].message}`);
+        alert(acel_x);
+        
+        if (acel_x == 0) {
+          // alert("Crash");
+          document.location.href = "/crash.html";
+
+        }
+
+
     });
   });
 
@@ -61,3 +74,8 @@ firebase.database().ref('sensors').on('value',(snap)=>{
 //   alert(`Mi Email ${data}`);
 //   updateStarCount(postElement, data);
 // });
+
+function check_crash() {
+  
+}
+
