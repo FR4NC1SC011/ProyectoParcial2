@@ -40,28 +40,68 @@ $('#contactForm').submit(function(e) {
 //     });
 // });
 
+
+// Regresa True si el auto se mueve sin nuestro permiso
+function es_robo(conduciendo, x, y, z) {
+  if (conduciendo == false) {
+    if (x != 0 || y != 0 || z != 0) {
+      return true;
+    }
+  }
+  return false
+}
+
+// Regresa True si alguien se acerca al vehiculo
+function abrimos_puertas(abrimos, proximidad) {
+  if (abrimos == false) {
+    if (proximidad == 0) {
+      return true;
+    }
+  }
+  return false;
+}
+
 firebase.database().ref('sensors').on('value',(snap)=>{
     Object.keys(snap.val()).forEach((key) => {
+
+        // Data de los sensores
         var acel_x = snap.val()[key].val_x;
         var acel_y = snap.val()[key].val_y;
         var acel_z = snap.val()[key].val_z;
         var ilum = snap.val()[key].iluminacion;
+        var proxim = snap.val()[key].proximidad;
+
+
+        var driving = snap.val()[key].conduciendo;
+        var open_doors = snap.val()[key].abrir_puertas; 
+
+
+        // Imprimir Sensores
         document.getElementById("val_x").innerHTML = acel_x; 
         document.getElementById("val_y").innerHTML = acel_y;
         document.getElementById("val_z").innerHTML = acel_z;
         document.getElementById("iluminacion").innerHTML = ilum; 
-        // alert(`Once Name: ${snap.val()[key].name}`);
-        // alert(`Once Email: ${snap.val()[key].email}`);
-        // alert(`Once Subject: ${snap.val()[key].subject}`);
-        // alert(`Once Message: ${snap.val()[key].message}`);
-        alert(acel_x);
-        
-        if (acel_x == 0) {
-          // alert("Crash");
-          document.location.href = "/crash.html";
+        document.getElementById("proximidad").innerHTML = proxim; 
 
+
+        document.getElementById("conduciendo").innerHTML = driving; 
+        document.getElementById("puertas").innerHTML = open_doors; 
+
+
+        
+        // TODO: detectar choque
+
+        // Detectar robo
+        if (es_robo(driving, val_x, val_y, val_z)) {
+          alert("Robo Detectado");
+          document.location.href = "/robo.html";
         }
 
+        // Detectar proximidad
+        if (abrimos_puertas(open_doors, proxim)) {
+          alert("Proximidad Peligrosa Detectada");
+          document.location.href = "/robo.html";
+        }
 
     });
   });
@@ -75,7 +115,5 @@ firebase.database().ref('sensors').on('value',(snap)=>{
 //   updateStarCount(postElement, data);
 // });
 
-function check_crash() {
-  
-}
+
 
