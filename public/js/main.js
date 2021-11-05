@@ -40,6 +40,18 @@ $('#contactForm').submit(function(e) {
 //     });
 // });
 
+// Regresa True si detecmatos choque
+function es_choque(c, x, z, p) {
+  if (c == true) {                  // Estamos conduciendo
+    if (x == 0 && z == 0) {         // Dejamos de movernos
+      if (p == 0) {                 // Chocamos
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 
 // Regresa True si el auto se mueve sin nuestro permiso
 function es_robo(conduciendo, x, y, z) {
@@ -89,7 +101,11 @@ firebase.database().ref('sensors').on('value',(snap)=>{
 
 
         
-        // TODO: detectar choque
+        // Detectar choque
+        if (es_choque(driving, acel_x, acel_z, proxim)) {
+          alert("Choque Detectado");
+          document.location.href = "/choque.html";
+        }
 
         // Detectar robo
         if (es_robo(driving, acel_x, acel_y, acel_z)) {
@@ -100,7 +116,7 @@ firebase.database().ref('sensors').on('value',(snap)=>{
         // Detectar proximidad
         if (abrimos_puertas(open_doors, proxim)) {
           alert("Proximidad Peligrosa Detectada");
-          document.location.href = "/robo.html";
+          document.location.href = "/proximidad.html";
         }
 
     });
