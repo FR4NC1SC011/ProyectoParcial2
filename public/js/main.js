@@ -92,7 +92,7 @@ firebase.database().ref('sensors').on('value',(snap)=>{
         // TODO: detectar choque
 
         // Detectar robo
-        if (es_robo(driving, val_x, val_y, val_z)) {
+        if (es_robo(driving, acel_x, acel_y, acel_z)) {
           alert("Robo Detectado");
           document.location.href = "/robo.html";
         }
