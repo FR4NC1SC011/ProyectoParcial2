@@ -10,7 +10,7 @@ NetAddress remoteLocation;
 float myAccelerometerX, myAccelerometerY, myAccelerometerZ;
 int x, y, p; 
 String myIPAddress; 
-String remoteAddress = "192.168.0.17";                      
+String remoteAddress = "127.0.1.1";                      
 
 PVector magneticField, accelerometer;
 float light, proximity;
@@ -32,9 +32,9 @@ void draw()
 {
   background(78, 93, 75);
   text("Accelerometer :" + "\n" 
-    + "x: " + nfp(accelerometer.x, 1, 2) + "\n" 
-    + "y: " + nfp(accelerometer.y, 1, 2) + "\n" 
-    + "z: " + nfp(accelerometer.z, 1, 2) + "\n"
+    + "x: " + nfp(myAccelerometerX, 1, 2) + "\n" 
+    + "y: " + nfp(myAccelerometerY, 1, 2) + "\n" 
+    + "z: " + nfp(myAccelerometerZ, 1, 2) + "\n"
     + "MagneticField :" + "\n" 
     + "x: " + nfp(magneticField.x, 1, 2) + "\n"
     + "y: " + nfp(magneticField.y, 1, 2) + "\n" 
@@ -43,10 +43,12 @@ void draw()
     + "Proximity Sensor : " + proximity + "\n"
     , 20, 0, width, height);
     
-  OscMessage myMessage = new OscMessage("accelerometerData");
-  myMessage.add(accelerometer.x);                        
-  myMessage.add(accelerometer.y);
-  myMessage.add(accelerometer.z);
+  OscMessage myMessage = new OscMessage("sensors");
+  myMessage.add(myAccelerometerX);                        
+  //myMessage.add(myAccelerometerY);
+  //myMessage.add(myAccelerometerZ);
+  //myMessage.add(light);
+  //myMessage.add(proximity);
   oscP5.send(myMessage, remoteLocation); 
 }
 
@@ -62,7 +64,11 @@ void oscEvent(OscMessage theOscMessage) {
 
 void onAccelerometerEvent(float x, float y, float z, long time, int accuracy)
 {
-  accelerometer.set(x, y, z);
+  //accelerometer.set(x, y, z);
+  myAccelerometerX = x;
+  myAccelerometerY = y;
+  myAccelerometerZ = z;
+  
 }
 
 void onMagneticFieldEvent(float x, float y, float z, long time, int accuracy)
@@ -95,7 +101,7 @@ public void mousePressed() {
 
 void initNetworkConnection()
 {
-  oscP5 = new OscP5(this, 12000);                         // 9
+  oscP5 = new OscP5(this, 12001);                         // 9
   remoteLocation = new NetAddress(remoteAddress, 12000);  // 10
   myIPAddress = KetaiNet.getIP();                         // 11
 }
