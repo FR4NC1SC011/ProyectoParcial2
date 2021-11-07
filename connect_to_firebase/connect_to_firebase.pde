@@ -28,36 +28,45 @@ void draw() {
     "z: "+ nfp(accelerometerZ, 1, 3) + "\n\n" +
     
     "luz: "+ light + "\n" +
-    "proximidad: "+ proximity + "\n", width/2, height/2);
-
-  //OscMessage myMessage = new OscMessage("mouseStatus");
-  //myMessage.add(mouseX);                                  
-  //myMessage.add(mouseY);                                  
-  //myMessage.add(int(mousePressed));                       
-  //oscP5.send(myMessage, remoteLocation);                  
+    "proximidad: "+ proximity + "\n", width/2, height/2);              
 }
 
 void mousePressed() {
-  //fire.setValue("Iluminacion", "10");//Set info to specific key in FireBase
-  //fire.setValue("Proximidad", "0");//Set info to specific key in FireBase
-  //fire.setValue("sensors/-MnSpF2G5-ySw3o4Ec1d/val_y", "9.81");
   
+  String x = Float.toString(accelerometerX);
+  String y = Float.toString(accelerometerY);
+  String z = Float.toString(accelerometerZ);
+
+  String p = Float.toString(proximity);
+  String l = Float.toString(light);
   
-  fire.setValue("sensors/-MnSpF2G5-ySw3o4Ec1d/abrir_puertas", "1");
-  //fire.setValue("sensors/-MnSpF2G5-ySw3o4Ec1d/conduciendo", "1");
+  String driv = Integer.toString(driving);
+  String doors = Integer.toString(doors_open);
+  
+ 
+  fire.setValue("sensors/-MnSpF2G5-ySw3o4Ec1d/abrir_puertas", doors);
+  fire.setValue("sensors/-MnSpF2G5-ySw3o4Ec1d/conduciendo", driv);
+  fire.setValue("sensors/-MnSpF2G5-ySw3o4Ec1d/iluminacion", l);
+  fire.setValue("sensors/-MnSpF2G5-ySw3o4Ec1d/proximidad", p);
+  fire.setValue("sensors/-MnSpF2G5-ySw3o4Ec1d/val_x", x);
+  fire.setValue("sensors/-MnSpF2G5-ySw3o4Ec1d/val_y",y);
+  fire.setValue("sensors/-MnSpF2G5-ySw3o4Ec1d/val_z", z);
 
-
-  //println(fire.getValue("Iluminacion"));//Get info from specific key
 }
 
 void oscEvent(OscMessage theOscMessage) {
-  if (theOscMessage.checkTypetag("f"))                  // 6
+  if (theOscMessage.checkTypetag("fffffii"))                 
   {
-    accelerometerX =  theOscMessage.get(0).floatValue();  // 7
-    //accelerometerY =  theOscMessage.get(1).floatValue();
-    //accelerometerZ =  theOscMessage.get(2).floatValue();
-    //light =  theOscMessage.get(3).floatValue();
-    //proximity =  theOscMessage.get(4).floatValue();
+    accelerometerX =  theOscMessage.get(0).floatValue(); 
+    accelerometerY =  theOscMessage.get(1).floatValue();
+    accelerometerZ =  theOscMessage.get(2).floatValue();
+    
+    light =  theOscMessage.get(3).floatValue();
+    proximity =  theOscMessage.get(4).floatValue();
+    
+    driving =  theOscMessage.get(5).intValue();
+    doors_open =  theOscMessage.get(6).intValue();
+
 
   }
 }
